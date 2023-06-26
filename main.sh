@@ -12,10 +12,8 @@ while (( $# != 0 )); do
       version
       ;;
     -d|--debug)
-      set -x
-      logging_start
       logging_msg "DEBUG" "running on Debug mode."
-      logging_msg "DEBUG" "saving logs in ${log_name}"
+      set -x
       shift
       ;;
     -*|--*)
@@ -30,3 +28,15 @@ while (( $# != 0 )); do
       ;;
   esac
 done
+
+logging_msg "INFO" "Start $0"
+
+#logging_msg "INFO" "You can control to save or not with using logging_start()."
+#logging_start ./logs/
+#logging_msg "INFO" "This message is saved in ${log_name},"
+#logging_msg "INFO" "and logrotate file is saved in ${logconf}"
+
+#logging_msg "INFO" "If you wanna stop the logging, use logging_stop()."
+#logging_stop
+logging_msg "INFO" "This message isn't saved in \${log_name}, only displayed on the screen."
+
