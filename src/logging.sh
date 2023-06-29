@@ -24,7 +24,7 @@ logrotate_config() {
   cd $1 && log_name_dir="$(pwd)/*.log" && cd -
   cat << EOF > ${logconf}
 ${log_name_dir//\/\//\/} {
-    rotate 100
+    rotate 365
     daily
     create
     missingok
@@ -37,8 +37,15 @@ EOF
 }
 
 logrotate_start() {
-  logging_msg "INFO" "logrotate Start."
-  /sbin/logrotate -v -s "${logconf%.*}.status" "${logconf}"
+  case $1 in
+    -v|--verbose)
+      logging_msg "INFO" "logrotate Start."
+      /sbin/logrotate -v -s "${logconf%.*}.status" "${logconf}"
+      ;;
+    *)
+      /sbin/logrotate -s "${logconf%.*}.status" "${logconf}"
+      ;;
+  esac
 }
 
 ################################################################################

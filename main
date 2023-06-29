@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -e
+# set -e command is imported by under the each source.
 for f in $(find ./src/ -name "*.sh"); do source "${f}"; done
 
 while (( $# != 0 )); do
