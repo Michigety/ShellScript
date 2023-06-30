@@ -30,10 +30,9 @@ main() {
   wait "${background_PID}"
 }
 
-trap '' INT
-sleep_ten
+#trap '' INT
+#sleep_ten
 
-trap INT
-sleep_ten
-:wq
+#trap INT
+#sleep_ten
 

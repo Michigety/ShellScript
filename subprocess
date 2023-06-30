@@ -1,0 +1,41 @@
+#!/bin/bash
+
+#trap 'no_escape' INT
+#no_escape() {
+#  
+#}
+
+dl="\033[2K"
+cr="\r"
+start_time=$(date +%s%1N)
+
+
+
+
+tee_count=0
+while true; do
+  current_time=$(date +%s%1N)
+  result_time=$((current_time - start_time))
+  formatted_time=$(printf "%d.%ds" $((result_time/10)) $((result_time%10)))
+  msg="stop watch:\t\033[;94m${formatted_time}\033[0m"
+
+  if [[ -p /dev/stdout ]] || [[ ! -t 1 ]]; then
+    msg="stop watch:\t${formatted_time}"
+    if (( result_time == 100 )); then
+      echo -e "${msg}"
+      break
+    else
+      (( tee_count == 0 )) && echo -e "doing..." && (( tee_count++ ))
+    fi
+    (( result_time == 100 )) && echo -e "${msg}" && break
+  #elif [[ ! -t 1 && ! -p /dev/stdout ]]; then
+  #  msg="stop watch:\t${formatted_time}"
+  #  echo -ne "${cr}${msg}"
+  #  final_msg="${msg}"
+  else
+    msg="stop watch:\t\033[;94m${formatted_time}\033[0m"
+    echo -ne "${dl}${cr}${msg}"
+  fi
+
+  sleep 0.1
+done

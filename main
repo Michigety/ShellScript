@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # set -e command is imported by under the each source.
-for f in $(find ./src/ -name "*.sh"); do source "${f}"; done
+for f in $(find ./src/ -maxdepth 1 -name "*.sh"); do source "${f}"; done
 
 while (( $# != 0 )); do
   case $1 in
@@ -16,6 +16,9 @@ while (( $# != 0 )); do
       set -x
       shift
       ;;
+    --logging_test)
+      logging_test
+      ;;
     -*|--*)
       echo "$0: $1: invalid option"
       echo "$0: usage: $0 [-h|--help] [-v|--version] [-d|--debug]"
@@ -29,14 +32,16 @@ while (( $# != 0 )); do
   esac
 done
 
-logging_msg "INFO" "Start $0"
+#logging_start ./logs
 
-#logging_msg "INFO" "You can control to save or not with using logging_start()."
-#logging_start ./logs/
-#logging_msg "INFO" "This message is saved in ${log_name},"
-#logging_msg "INFO" "and logrotate file is saved in ${logconf}"
+#subprocess_logging ./subprocess "This is useless arguments"
+#echo $?
 
-#logging_msg "INFO" "If you wanna stop the logging, use logging_stop()."
-#logging_stop
-logging_msg "INFO" "This message isn't saved in \${log_name}, only displayed on the screen."
+set +e
+set -o pipefail
+
+cat 1234.qwe 2>&1 | while IFS= read -r line; do
+  echo $line
+done
+echo "hahha:$?"
 
