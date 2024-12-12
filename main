@@ -1,7 +1,7 @@
 #!/bin/bash
 
-set -e
-for f in $(find ./src/ -name "*.sh"); do source "${f}"; done
+# set -e command is imported by under the each source.
+for f in $(find ./src/ -maxdepth 1 -name "*.sh"); do source "${f}"; done
 
 while (( $# != 0 )); do
   case $1 in
@@ -12,11 +12,12 @@ while (( $# != 0 )); do
       version
       ;;
     -d|--debug)
-      set -x
-      logging_start
       logging_msg "DEBUG" "running on Debug mode."
-      logging_msg "DEBUG" "saving logs in ${log_name}"
+      set -x
       shift
+      ;;
+    --logging_test)
+      logging_test
       ;;
     -*|--*)
       echo "$0: $1: invalid option"
@@ -30,3 +31,17 @@ while (( $# != 0 )); do
       ;;
   esac
 done
+
+#logging_start ./logs
+
+#subprocess_logging ./subprocess "This is useless arguments"
+#echo $?
+
+set +e
+set -o pipefail
+
+cat 1234.qwe 2>&1 | while IFS= read -r line; do
+  echo $line
+done
+echo "hahha:$?"
+
